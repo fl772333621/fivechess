@@ -259,4 +259,8 @@ public class FiveChessFrame extends JFrame {
         }
     }
 
+    public boolean getTurn() {
+        return turn;
+    }
+
 }
