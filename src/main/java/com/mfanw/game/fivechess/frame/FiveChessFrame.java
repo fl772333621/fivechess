@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class FiveChessFrame extends JFrame {
@@ -30,6 +31,11 @@ public class FiveChessFrame extends JFrame {
      * 当前棋盘，-1=空白，1=黑旗，0=白旗
      */
     private int[][] chesses = new int[15][15];
+
+    /**
+     * 当前胜利者，-1=空白，1=黑旗，0=白旗
+     */
+    private int success = -1;
 
     public FiveChessFrame() {
         this.setTitle(title);
@@ -75,6 +81,14 @@ public class FiveChessFrame extends JFrame {
         // 获取chesses的index
         int indexX = (x + CELL_SIZE / 2 + 1) / CELL_SIZE;
         int indexY = (y + CELL_SIZE / 2 + 1) / CELL_SIZE;
+        paintChessByIndex(indexX, indexY);
+    }
+
+    public void paintChessByIndex(int indexX, int indexY) {
+        if (success > -1) {
+            showWinDialog();
+            return;
+        }
         if (chesses[indexX][indexY] != -1) {
             return;
         }
@@ -93,9 +107,18 @@ public class FiveChessFrame extends JFrame {
         g.setColor(tempColor);
         chesses[indexX][indexY] = trun ? 1 : 0;
         if (checkWinner()) {
-            System.out.println("win " + trun);
+            success = trun ? 1 : 0;
+            showWinDialog();
+            return;
         }
         trun = !trun;
+    }
+
+    private void showWinDialog() {
+        int back = JOptionPane.showConfirmDialog(this, (success == 1 ? "黑旗" : "白旗") + "胜利！点击确定重新游戏~");
+        if (back == JOptionPane.YES_OPTION) {
+            startGame();
+        }
     }
 
     private boolean checkWinner() {
