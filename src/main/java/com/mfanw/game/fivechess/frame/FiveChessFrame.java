@@ -58,6 +58,11 @@ public class FiveChessFrame extends JFrame {
      */
     private int success = -1;
 
+    /**
+     * 自动模式：自动模式下不会弹出对话框阻止继续下棋
+     */
+    private boolean autoType = false;
+
     private List<Point> steps = Lists.newArrayList();
 
     public FiveChessFrame() {
@@ -164,7 +169,9 @@ public class FiveChessFrame extends JFrame {
 
     public void paintChessByIndex(int indexX, int indexY) {
         if (success > -1) {
-            showWinDialog();
+            if (!autoType) {
+                showWinDialog();
+            }
             return;
         }
         if (chesses[indexX][indexY] != -1) {
@@ -259,8 +266,34 @@ public class FiveChessFrame extends JFrame {
         }
     }
 
+    /**
+     * 当前顺序，true=黑旗，false=白旗
+     */
     public boolean getTurn() {
         return turn;
     }
+
+    /**
+     * 判断是否是自动模式
+     */
+    public boolean isAutoType() {
+        return autoType;
+    }
+
+    /**
+     * 设置自动模式
+     */
+    public void setAutoType(boolean autoType) {
+        this.autoType = autoType;
+    }
+
+    /**
+     * 获取成功状态
+     */
+    public int getSuccess() {
+        return success;
+    }
+
+
 
 }
