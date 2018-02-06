@@ -15,8 +15,10 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import org.apache.commons.io.FileUtils;
 
@@ -66,7 +68,7 @@ public class FiveChessFrame extends JFrame {
         this.add(panel);
         // Add Button
         JButton startGameBtn = new JButton("开始游戏");
-        startGameBtn.setBounds(800, 100, 100, 30);
+        startGameBtn.setBounds(780, 100, 150, 30);
         startGameBtn.addActionListener(new ActionListener() {
 
             @Override
@@ -78,7 +80,7 @@ public class FiveChessFrame extends JFrame {
         this.add(startGameBtn);
         // Add Button
         JButton backupGameBtn = new JButton("保存进度");
-        backupGameBtn.setBounds(800, 150, 100, 30);
+        backupGameBtn.setBounds(780, 150, 150, 30);
         backupGameBtn.addActionListener(new ActionListener() {
 
             @Override
@@ -88,9 +90,17 @@ public class FiveChessFrame extends JFrame {
 
         });
         this.add(backupGameBtn);
+        // Add Label
+        JLabel speedLabel = new JLabel("播放间隔");
+        speedLabel.setBounds(780, 200, 80, 30);
+        this.add(speedLabel);
+        // Add Text
+        JTextField speedTextField = new JTextField("1000");
+        speedTextField.setBounds(850, 200, 80, 30);
+        this.add(speedTextField);
         // Add Button
         JButton loadGameBtn = new JButton("加载进度");
-        loadGameBtn.setBounds(800, 200, 100, 30);
+        loadGameBtn.setBounds(780, 250, 150, 30);
         loadGameBtn.addActionListener(new ActionListener() {
 
             @Override
@@ -106,7 +116,8 @@ public class FiveChessFrame extends JFrame {
                             if (ps != null && !ps.isEmpty()) {
                                 for (Point p : ps) {
                                     paintChessByIndex(p.x, p.y);
-                                    Thread.sleep(1000);
+                                    int speed = speedTextField.getText() == null || speedTextField.getText().isEmpty() ? 1 : Integer.parseInt(speedTextField.getText());
+                                    Thread.sleep(speed);
                                 }
                             }
                         }
