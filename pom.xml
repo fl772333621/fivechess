@@ -30,6 +30,12 @@
 			<artifactId>fastjson</artifactId>
 			<version>1.2.6</version>
 		</dependency>
+		<!-- guava工具类 -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>18.0</version>
+		</dependency>
 		<!-- 测试工具类JUnit -->
 		<dependency>
 			<groupId>junit</groupId>

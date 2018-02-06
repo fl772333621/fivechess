@@ -2,13 +2,25 @@ package com.mfanw.game.fivechess.frame;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import org.apache.commons.io.FileUtils;
+
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
 
 public class FiveChessFrame extends JFrame {
 
@@ -42,6 +54,8 @@ public class FiveChessFrame extends JFrame {
      * 当前胜利者，-1=空白，1=黑旗，0=白旗
      */
     private int success = -1;
+
+    private List<Point> steps = Lists.newArrayList();
 
     public FiveChessFrame() {
         this.setTitle(title);
@@ -83,6 +97,7 @@ public class FiveChessFrame extends JFrame {
         }
         // paint turn
         g.fillOval(TURN_X, TURN_Y, CHESS_SIZE, CHESS_SIZE);
+        steps = Lists.newArrayList();
     }
 
     public void paintChess(int x, int y) {
@@ -100,6 +115,7 @@ public class FiveChessFrame extends JFrame {
         if (chesses[indexX][indexY] != -1) {
             return;
         }
+        steps.add(new Point(indexX, indexY));
         // 获取棋盘中的point
         int pointX = indexX * CELL_SIZE - CHESS_SIZE / 2 + PADDING_SIZE;
         int pointY = indexY * CELL_SIZE - CHESS_SIZE / 2 + PADDING_SIZE;
@@ -127,7 +143,15 @@ public class FiveChessFrame extends JFrame {
     }
 
     private void showWinDialog() {
-        int back = JOptionPane.showConfirmDialog(this, (success == 1 ? "黑旗" : "白旗") + "胜利！点击确定重新游戏~");
+        String winner = success == 1 ? "黑旗" : "白旗";
+        DateFormat dateForamt = new SimpleDateFormat("yyyyMMddHHmmss");
+        File file = new File("D:/AAAAA/" + dateForamt.format(new Date()) + "_" + winner + ".fcd");
+        try {
+            FileUtils.write(file, JSON.toJSONString(steps));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int back = JOptionPane.showConfirmDialog(this, winner + "胜利！点击确定重新游戏~");
         if (back == JOptionPane.YES_OPTION) {
             startGame();
         }
