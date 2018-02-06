@@ -77,8 +77,20 @@ public class FiveChessFrame extends JFrame {
         });
         this.add(startGameBtn);
         // Add Button
-        JButton loadGameBtn = new JButton("加载游戏");
-        loadGameBtn.setBounds(800, 150, 100, 30);
+        JButton backupGameBtn = new JButton("保存进度");
+        backupGameBtn.setBounds(800, 150, 100, 30);
+        backupGameBtn.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                backupGame(null);
+            }
+
+        });
+        this.add(backupGameBtn);
+        // Add Button
+        JButton loadGameBtn = new JButton("加载进度");
+        loadGameBtn.setBounds(800, 200, 100, 30);
         loadGameBtn.addActionListener(new ActionListener() {
 
             @Override
@@ -178,16 +190,20 @@ public class FiveChessFrame extends JFrame {
         String winner = success == 1 ? "黑旗" : "白旗";
         int back = JOptionPane.showConfirmDialog(this, winner + "胜利！点击是保存棋局并重新游戏，点击否重新开始游戏，点击取消返回棋局~");
         if (back == JOptionPane.YES_OPTION) {
-            DateFormat dateForamt = new SimpleDateFormat("yyyyMMddHHmmss");
-            File file = new File("D:/AAAAA/" + dateForamt.format(new Date()) + "_" + winner + ".fcd");
-            try {
-                FileUtils.write(file, JSON.toJSONString(steps));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            backupGame(winner);
             startGame();
         } else if (back == JOptionPane.NO_OPTION) {
             startGame();
+        }
+    }
+
+    private void backupGame(String winner) {
+        DateFormat dateForamt = new SimpleDateFormat("yyyyMMddHHmmss");
+        File file = new File("D:/AAAAA/" + dateForamt.format(new Date()) + (winner == null ? "" : "_" + winner) + ".fcd");
+        try {
+            FileUtils.write(file, JSON.toJSONString(steps));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
