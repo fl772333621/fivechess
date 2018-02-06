@@ -20,6 +20,10 @@ public class FiveChessFrame extends JFrame {
 
     private static final long serialVersionUID = -3127709948201127296L;
 
+    public static final int TURN_X = PADDING_SIZE + CELL_SIZE * 7 - CHESS_SIZE / 2;
+
+    public static final int TURN_Y = CHESS_SIZE / 2 - 10;
+
     private String title = "五子棋";
 
     private JPanel panel;
@@ -47,7 +51,7 @@ public class FiveChessFrame extends JFrame {
         this.add(panel);
         // Add Button
         JButton startGameBtn = new JButton("开始游戏");
-        startGameBtn.setBounds(700, 100, 100, 30);
+        startGameBtn.setBounds(800, 100, 100, 30);
         startGameBtn.addActionListener(new ActionListener() {
 
             @Override
@@ -77,6 +81,8 @@ public class FiveChessFrame extends JFrame {
                 chesses[x][y] = -1;
             }
         }
+        // paint turn
+        g.fillOval(TURN_X, TURN_Y, CHESS_SIZE, CHESS_SIZE);
     }
 
     public void paintChess(int x, int y) {
@@ -102,10 +108,14 @@ public class FiveChessFrame extends JFrame {
         if (trun) {
             g.setColor(Color.BLACK);
             g.fillOval(pointX, pointY, CHESS_SIZE, CHESS_SIZE);
+            g.setColor(Color.WHITE);
         } else {
             g.setColor(Color.WHITE);
             g.fillOval(pointX, pointY, CHESS_SIZE, CHESS_SIZE);
+            g.setColor(Color.BLACK);
         }
+        // paint turn
+        g.fillOval(TURN_X, TURN_Y, CHESS_SIZE, CHESS_SIZE);
         g.setColor(tempColor);
         chesses[indexX][indexY] = trun ? 1 : 0;
         if (checkWinner()) {
