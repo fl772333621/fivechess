@@ -46,7 +46,7 @@ public class FiveChessFrame extends JFrame {
     /**
      * 当前顺序，true=黑旗，false=白旗
      */
-    private boolean trun = true;
+    private boolean turn = true;
 
     /**
      * 当前棋盘，-1=空白，1=黑旗，0=白旗
@@ -176,7 +176,7 @@ public class FiveChessFrame extends JFrame {
         int pointY = indexY * CELL_SIZE - CHESS_SIZE / 2 + PADDING_SIZE;
         Graphics g = panel.getGraphics();
         Color tempColor = g.getColor();
-        if (trun) {
+        if (turn) {
             g.setColor(Color.BLACK);
             g.fillOval(pointX, pointY, CHESS_SIZE, CHESS_SIZE);
             g.setColor(Color.WHITE);
@@ -188,13 +188,13 @@ public class FiveChessFrame extends JFrame {
         // paint turn
         g.fillOval(TURN_X, TURN_Y, CHESS_SIZE, CHESS_SIZE);
         g.setColor(tempColor);
-        chesses[indexX][indexY] = trun ? 1 : 0;
+        chesses[indexX][indexY] = turn ? 1 : 0;
         if (checkWinner()) {
-            success = trun ? 1 : 0;
+            success = turn ? 1 : 0;
             showWinDialog();
             return;
         }
-        trun = !trun;
+        turn = !turn;
     }
 
     private void showWinDialog() {
