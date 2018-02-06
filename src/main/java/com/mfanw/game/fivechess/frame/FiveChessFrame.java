@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 
 public class FiveChessFrame extends JFrame {
 
+    public static final int PADDING_SIZE = 50;
+
     public static final int CELL_SIZE = 40;
 
     public static final int CHESS_SIZE = 32;
@@ -39,7 +41,7 @@ public class FiveChessFrame extends JFrame {
 
     public FiveChessFrame() {
         this.setTitle(title);
-        this.setBounds(300, 100, 1000, 700);
+        this.setBounds(300, 100, 1000, 800);
         this.setLayout(null);
         panel = new FiveChessPanel(this);
         this.add(panel);
@@ -66,8 +68,8 @@ public class FiveChessFrame extends JFrame {
         g.fillRect(0, 0, panel.getWidth(), panel.getHeight());
         g.setColor(Color.BLACK);
         for (int i = 0; i < 15; i++) {
-            g.drawLine(i * CELL_SIZE, 0, i * CELL_SIZE, 1000);
-            g.drawLine(0, i * CELL_SIZE, 1000, i * CELL_SIZE);
+            g.drawLine(PADDING_SIZE + i * CELL_SIZE, PADDING_SIZE, PADDING_SIZE + i * CELL_SIZE, PADDING_SIZE + CELL_SIZE * 14);
+            g.drawLine(PADDING_SIZE, PADDING_SIZE + i * CELL_SIZE, PADDING_SIZE + CELL_SIZE * 14, PADDING_SIZE + i * CELL_SIZE);
         }
         // chess初始化
         for (int y = 0; y < 15; y++) {
@@ -79,8 +81,8 @@ public class FiveChessFrame extends JFrame {
 
     public void paintChess(int x, int y) {
         // 获取chesses的index
-        int indexX = (x + CELL_SIZE / 2 + 1) / CELL_SIZE;
-        int indexY = (y + CELL_SIZE / 2 + 1) / CELL_SIZE;
+        int indexX = (x - PADDING_SIZE + CELL_SIZE / 2 + 1) / CELL_SIZE;
+        int indexY = (y - PADDING_SIZE + CELL_SIZE / 2 + 1) / CELL_SIZE;
         paintChessByIndex(indexX, indexY);
     }
 
@@ -93,8 +95,8 @@ public class FiveChessFrame extends JFrame {
             return;
         }
         // 获取棋盘中的point
-        int pointX = indexX * CELL_SIZE - CHESS_SIZE / 2;
-        int pointY = indexY * CELL_SIZE - CHESS_SIZE / 2;
+        int pointX = indexX * CELL_SIZE - CHESS_SIZE / 2 + PADDING_SIZE;
+        int pointY = indexY * CELL_SIZE - CHESS_SIZE / 2 + PADDING_SIZE;
         Graphics g = panel.getGraphics();
         Color tempColor = g.getColor();
         if (trun) {
