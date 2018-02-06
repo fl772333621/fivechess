@@ -294,6 +294,8 @@ public class FiveChessFrame extends JFrame {
         return success;
     }
 
-
+    public int[][] getChesses() {
+        return chesses;
+    }
 
 }
