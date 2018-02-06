@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -75,6 +76,36 @@ public class FiveChessFrame extends JFrame {
 
         });
         this.add(startGameBtn);
+        // Add Button
+        JButton loadGameBtn = new JButton("加载游戏");
+        loadGameBtn.setBounds(800, 150, 100, 30);
+        loadGameBtn.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fd = new JFileChooser("D:/AAAAA/");
+                fd.showOpenDialog(null);
+                File f = fd.getSelectedFile();
+                if (f != null) {
+                    try {
+                        String content = FileUtils.readFileToString(f);
+                        if (content != null && !content.isEmpty()) {
+                            List<Point> ps = JSON.parseArray(content, Point.class);
+                            if (ps != null && !ps.isEmpty()) {
+                                for (Point p : ps) {
+                                    paintChessByIndex(p.x, p.y);
+                                    Thread.sleep(1000);
+                                }
+                            }
+                        }
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+
+        });
+        this.add(loadGameBtn);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setVisible(true);
@@ -97,6 +128,7 @@ public class FiveChessFrame extends JFrame {
         }
         // paint turn
         g.fillOval(TURN_X, TURN_Y, CHESS_SIZE, CHESS_SIZE);
+        success = -1;
         steps = Lists.newArrayList();
     }
 
@@ -144,15 +176,17 @@ public class FiveChessFrame extends JFrame {
 
     private void showWinDialog() {
         String winner = success == 1 ? "黑旗" : "白旗";
-        DateFormat dateForamt = new SimpleDateFormat("yyyyMMddHHmmss");
-        File file = new File("D:/AAAAA/" + dateForamt.format(new Date()) + "_" + winner + ".fcd");
-        try {
-            FileUtils.write(file, JSON.toJSONString(steps));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        int back = JOptionPane.showConfirmDialog(this, winner + "胜利！点击确定重新游戏~");
+        int back = JOptionPane.showConfirmDialog(this, winner + "胜利！点击是保存棋局并重新游戏，点击否重新开始游戏，点击取消返回棋局~");
         if (back == JOptionPane.YES_OPTION) {
+            DateFormat dateForamt = new SimpleDateFormat("yyyyMMddHHmmss");
+            File file = new File("D:/AAAAA/" + dateForamt.format(new Date()) + "_" + winner + ".fcd");
+            try {
+                FileUtils.write(file, JSON.toJSONString(steps));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            startGame();
+        } else if (back == JOptionPane.NO_OPTION) {
             startGame();
         }
     }
