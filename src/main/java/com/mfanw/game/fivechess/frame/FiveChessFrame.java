@@ -27,16 +27,29 @@ import com.google.common.collect.Lists;
 
 public class FiveChessFrame extends JFrame {
 
+    private static final long serialVersionUID = -3145559948201127296L;
+
+    /**
+     * 棋盘四周空白的间隔
+     */
     public static final int PADDING_SIZE = 50;
 
+    /**
+     * 棋盘格子大小
+     */
     public static final int CELL_SIZE = 40;
-
+    /**
+     * 棋子大小（直径）
+     */
     public static final int CHESS_SIZE = 32;
 
-    private static final long serialVersionUID = -3127709948201127296L;
-
+    /**
+     * 标志当前顺序的棋子的位置X（不要超出Panel）
+     */
     public static final int TURN_X = PADDING_SIZE + CELL_SIZE * 7 - CHESS_SIZE / 2;
-
+    /**
+     * 标志当前顺序的棋子的位置Y（不要超出Panel）
+     */
     public static final int TURN_Y = CHESS_SIZE / 2 - 10;
 
     private String title = "五子棋";
